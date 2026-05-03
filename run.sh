@@ -117,7 +117,7 @@ echo "========================================"
 if [ $NO_WAVEFORM -eq 1 ]; then
     # 纯仿真模式：不生成波形文件，最快
     echo "  纯仿真模式 (不生成波形)..."
-    if [ ! -f "sim/simv" ] || [ "firmware/firmware.hex" -nt "sim/simv" ] || [ "sim/testbench.v" -nt "sim/simv" ] || [ "hw/rtl/picorv32.v" -nt "sim/simv" ]; then
+    if [ ! -f "sim/simv" ] || [ "firmware/firmware.hex" -nt "sim/simv" ] || [ "sim/testbench.v" -nt "sim/simv" ] || [ "hardware/rtl/picorv32.v" -nt "sim/simv" ]; then
         echo "  编译 VCS 仿真可执行文件..."
         make sim/simv
     else
@@ -129,7 +129,7 @@ if [ $NO_WAVEFORM -eq 1 ]; then
 else
     # FSDB 波形模式
     echo "  FSDB 波形模式..."
-    if [ ! -f "sim/simv_fsdb" ] || [ "firmware/firmware.hex" -nt "sim/simv_fsdb" ] || [ "sim/testbench.v" -nt "sim/simv_fsdb" ] || [ "hw/rtl/picorv32.v" -nt "sim/simv_fsdb" ]; then
+    if [ ! -f "sim/simv_fsdb" ] || [ "firmware/firmware.hex" -nt "sim/simv_fsdb" ] || [ "sim/testbench.v" -nt "sim/simv_fsdb" ] || [ "hardware/rtl/picorv32.v" -nt "sim/simv_fsdb" ]; then
         echo "  编译 VCS 仿真可执行文件..."
         make sim/simv_fsdb
     else
@@ -153,7 +153,7 @@ if [ $SKIP_VERDI -eq 0 ]; then
         FSDB_SIZE=$(du -h sim/testbench.fsdb | cut -f1)
         echo "  FSDB 文件: sim/testbench.fsdb ($FSDB_SIZE)"
         echo "  启动 Verdi..."
-        verdi -ssf sim/testbench.fsdb -top testbench -sv sim/testbench.v hw/rtl/picorv32.v &
+        verdi -ssf sim/testbench.fsdb -top testbench -sv sim/testbench.v hardware/rtl/picorv32.v &
     else
         echo "错误: 未生成 sim/testbench.fsdb"
         exit 1

@@ -87,7 +87,7 @@ fi
 # ============================================================
 export PROJECT_DIR="$SCRIPT_DIR"
 export FIRMWARE_DIR="$SCRIPT_DIR/firmware"
-export RTL_DIR="$SCRIPT_DIR/hw/rtl"
+export RTL_DIR="$SCRIPT_DIR/hardware/rtl"
 export SIM_DIR="$SCRIPT_DIR/sim"
 
 echo ""

@@ -21,10 +21,9 @@
 ├── docs/                   # 项目文档
 │   ├── README.md          # 项目说明
 │   ├── INSTALL.md         # 安装指南
-│   ├── CONTRIBUTING.md    # 贡献指南
-│   └── RAM_EXPANSION.md   # RAM 扩展说明
+│   │   └── RAM_EXPANSION.md   # RAM 扩展说明
 │
-├── hw/                     # 硬件设计
+├── hardware/               # 硬件设计
 │   └── rtl/               # Verilog RTL 代码
 │       ├── picorv32.v     # PicoRV32 CPU 核心
 │       └── npu/           # NPU 设计
@@ -51,7 +50,6 @@
 ├── install.sh              # 安装脚本
 ├── setup_env.sh            # 环境配置
 ├── LICENSE                 # MIT 许可证
-└── CONTRIBUTING.md         # 贡献指南
 ```
 
 ## 快速开始
@@ -117,7 +115,6 @@ python export_deepnet_weights.py
 ## 相关文档
 
 - [安装指南](INSTALL.md)
-- [贡献指南](CONTRIBUTING.md)
 - [RAM 扩展说明](RAM_EXPANSION.md)
 
 ## 许可证
