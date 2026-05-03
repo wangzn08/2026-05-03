@@ -37,8 +37,8 @@ test: sim/testbench.vvp firmware/firmware.hex
 test_vcd: sim/testbench.vvp firmware/firmware.hex
 	$(VVP) -N $< +vcd +trace +noerror
 
-sim/testbench.vvp: sim/testbench.v rtl/picorv32.v
-	$(IVERILOG) -o $@ $(subst C,-DCOMPRESSED_ISA,$(COMPRESSED_ISA)) -I rtl -I sim $^
+sim/testbench.vvp: sim/testbench.v hw/rtl/picorv32.v
+	$(IVERILOG) -o $@ $(subst C,-DCOMPRESSED_ISA,$(COMPRESSED_ISA)) -I hw/rtl -I sim $^
 	chmod -x $@
 
 # ============================================================
@@ -50,11 +50,11 @@ VCS_HOME ?= /home/synopsys/vcs/O-2018.09-SP2
 VCS = VCS_HOME=$(VCS_HOME) VCS_ARCH_OVERRIDE=$(VCS_ARCH_OVERRIDE) vcs -full64 -debug_access+all -timescale=1ns/1ps
 VCS_VERDI_PLI = -P $(VERDI_HOME)/share/PLI/VCS/LINUX64/novas.tab $(VERDI_HOME)/share/PLI/VCS/LINUX64/pli.a
 
-sim/simv: sim/testbench.v rtl/picorv32.v firmware/firmware.hex
-	$(VCS) -o sim/simv sim/testbench.v rtl/picorv32.v +define+COMPRESSED_ISA
+sim/simv: sim/testbench.v hw/rtl/picorv32.v firmware/firmware.hex
+	$(VCS) -o sim/simv sim/testbench.v hw/rtl/picorv32.v +define+COMPRESSED_ISA
 
-sim/simv_fsdb: sim/testbench.v rtl/picorv32.v firmware/firmware.hex
-	$(VCS) -o sim/simv_fsdb sim/testbench.v rtl/picorv32.v +define+COMPRESSED_ISA +define+FSDB $(VCS_VERDI_PLI)
+sim/simv_fsdb: sim/testbench.v hw/rtl/picorv32.v firmware/firmware.hex
+	$(VCS) -o sim/simv_fsdb sim/testbench.v hw/rtl/picorv32.v +define+COMPRESSED_ISA +define+FSDB $(VCS_VERDI_PLI)
 
 test_vcs: sim/simv
 	./sim/simv +vcd +trace +noerror
@@ -66,7 +66,7 @@ test_vcs_fsdb: sim/simv_fsdb
 	./sim/simv_fsdb +fsdb +trace +noerror
 
 verdi: test_vcs_fsdb
-	verdi -ssf sim/testbench.fsdb -top testbench -sv sim/testbench.v rtl/picorv32.v &
+	verdi -ssf sim/testbench.fsdb -top testbench -sv sim/testbench.v hw/rtl/picorv32.v &
 
 # ============================================================
 # Firmware Build (C code -> hex for CPU)
@@ -110,6 +110,6 @@ clean:
 	rm -vrf $(FIRMWARE_OBJS) $(TEST_OBJS)
 	rm -vrf firmware/firmware.elf firmware/firmware.bin firmware/firmware.hex firmware/firmware.map
 	rm -vrf sim/testbench.vvp sim/testbench.vcd sim/testbench.fsdb sim/testbench.trace
-	rm -vrf sim/simv sim/simv_fsdb sim/simv.daidir sim/simv_fsdb.daidir sim/csrc *.key verdiLog
+	rm -vrf sim/simv sim/simv_fsdb sim/simv.daidir sim/simv_fsdb.daidir sim/csrc *.key verdiLog csrc
 
 .PHONY: test test_vcd test_vcs test_vcs_vcd test_vcs_fsdb verdi clean
